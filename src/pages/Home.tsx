@@ -5,8 +5,10 @@ import { Link } from "react-router";
 import { products } from "@/data/product";
 import BlogCard from "@/components/blogs/BlogCard";
 import { posts } from "@/data/post";
+import ProductCard from "@/components/products/ProductCard";
 
 const samplePosts = posts.slice(0, 3);
+const sampleProducts = products.slice(0, 4);
 
 const Home = () => {
   const Title = ({
@@ -59,6 +61,16 @@ const Home = () => {
         <img src={Couch} alt="Couch" className="w-full lg:w-3/5" />
       </div>
       <CarouselCard products={products} />
+      <Title
+        title="Featured Products"
+        href="/products"
+        sideText="View All Products"
+      />
+      <div className="grid grid-cols-1 gap-6 px-4 pt-4 md:grid-cols-2 md:px-0 lg:grid-cols-4">
+        {sampleProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
       <Title title="Recent Blog" href="/blogs" sideText="View All Posts" />
       <BlogCard posts={samplePosts} />
     </div>

@@ -9,15 +9,17 @@ import {
 } from "@/components/ui/card";
 import { Link } from "react-router";
 import { Icons } from "../icons";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, cn } from "@/lib/utils";
 
-interface ProductProps {
+interface ProductProps extends React.HTMLAttributes<HTMLDivElement> {
   product: Product;
 }
 
-function ProductCard({ product }: ProductProps) {
+function ProductCard({ product, className }: ProductProps) {
   return (
-    <Card className="size-full overflow-hidden rounded-lg py-0">
+    <Card
+      className={cn("size-full overflow-hidden rounded-lg py-0", className)}
+    >
       <Link to={`/products/${product.id}`} aria-label={product.name}>
         <div className="border-b p-0 py-0">
           <AspectRatio ratio={1 / 1} className="bg-muted">

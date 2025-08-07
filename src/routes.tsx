@@ -16,6 +16,8 @@ const BlogDetail = lazy(() => import("./pages/blogs/BlogDetail"));
 import ProductRootLayout from "./pages/products/ProductRootLayout";
 import ProductPage from "./pages/products/Product";
 import ProductDetail from "./pages/products/ProductDetail";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 const SuspenseFallBack = () => <div className="text-center">Loading...</div>;
 
@@ -63,5 +65,13 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);

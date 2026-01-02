@@ -18,6 +18,7 @@ import ProductPage from "./pages/products/Product";
 import ProductDetail from "./pages/products/ProductDetail";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import { homeLoader } from "./router/loader";
 
 const SuspenseFallBack = () => <div className="text-center">Loading...</div>;
 
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
     // errorElement: <Error />,
     ErrorBoundary: ErrorPage,
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <HomePage />, loader: homeLoader },
       { path: "about", element: <AboutPage /> },
       {
         path: "blogs",

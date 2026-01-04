@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import { lazy, Suspense } from "react";
 
 import HomePage from "./pages/Home";
@@ -19,6 +19,7 @@ import ProductDetail from "./pages/products/ProductDetail";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import { homeLoader } from "./router/loader";
+import { loginAction, logoutAction } from "./router/action";
 
 const SuspenseFallBack = () => <div className="text-center">Loading...</div>;
 
@@ -70,9 +71,15 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    action: loginAction,
   },
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/logout",
+    action: logoutAction,
+    loader: () => redirect("/"),
   },
 ]);

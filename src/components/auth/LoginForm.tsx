@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
+import { Link, useSubmit, useNavigation, useActionData } from "react-router";
 import {
   Card,
   CardContent,
@@ -21,6 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoaderCircle } from "lucide-react";
 
 const formSchema = z.object({
   phone: z
@@ -36,6 +37,14 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const submit = useSubmit();
+  const navigation = useNavigation();
+  const actionData = useActionData() as {
+    error?: string;
+    message?: string;
+  };
+  const isSubmitting = navigation.state === "submitting";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +54,10 @@ export function LoginForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    submit(values, {
+      method: "post",
+      action: "/login",
+    });
   }
 
   return (
@@ -110,10 +122,21 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+
+            {actionData && (
+              <p className="text-xs text-red-400">{actionData?.message}</p>
+            )}
             <div className="grid gap-4">
+              <Button type="submit" className="mt-2 w-full">
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <LoaderCircle className="animate-spin" />
+                    Signing in...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
+              </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-background text-muted-foreground relative z-10 px-2">
                   Or continue with
@@ -126,7 +149,7 @@ export function LoginForm() {
                     fill="currentColor"
                   />
                 </svg>
-                Login with Google
+                Sign in with Google
               </Button>
             </div>
           </form>

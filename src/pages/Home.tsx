@@ -1,16 +1,14 @@
+import { Link, useLoaderData } from "react-router";
 import CarouselCard from "@/components/products/CarouselCard";
 import { Button } from "@/components/ui/button";
 import Couch from "@/data/images/couch.png";
-import { Link } from "react-router";
-import { products } from "@/data/product";
 import BlogCard from "@/components/blogs/BlogCard";
-import { posts } from "@/data/post";
 import ProductCard from "@/components/products/ProductCard";
-
-const samplePosts = posts.slice(0, 3);
-const sampleProducts = products.slice(0, 4);
+import type { Product } from "@/types";
 
 const Home = () => {
+  const { productsData, postsData } = useLoaderData();
+
   const Title = ({
     title,
     href,
@@ -60,19 +58,19 @@ const Home = () => {
         </div>
         <img src={Couch} alt="Couch" className="w-full lg:w-3/5" />
       </div>
-      <CarouselCard products={products} />
+      <CarouselCard products={productsData.products} />
       <Title
         title="Featured Products"
         href="/products"
         sideText="View All Products"
       />
       <div className="grid grid-cols-1 gap-6 px-4 pt-4 md:grid-cols-2 md:px-0 lg:grid-cols-4">
-        {sampleProducts.map((product) => (
+        {productsData.products.slice(0, 4).map((product: Product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
       <Title title="Recent Blog" href="/blogs" sideText="View All Posts" />
-      <BlogCard posts={samplePosts} />
+      <BlogCard posts={postsData.posts} />
     </div>
   );
 };

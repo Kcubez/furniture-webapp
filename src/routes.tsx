@@ -19,7 +19,7 @@ import ProductDetail from "./pages/products/ProductDetail";
 import Login from "./pages/auth/Login";
 import {
   confirmLoader,
-  homeLoader,
+  // homeLoader,
   loginLoader,
   otpLoader,
 } from "./router/loader";
@@ -44,7 +44,11 @@ export const router = createBrowserRouter([
     // errorElement: <Error />,
     ErrorBoundary: ErrorPage,
     children: [
-      { index: true, element: <HomePage />, loader: homeLoader },
+      {
+        index: true,
+        element: <HomePage />,
+        // loader: homeLoader
+      },
       { path: "about", element: <AboutPage /> },
       {
         path: "blogs",

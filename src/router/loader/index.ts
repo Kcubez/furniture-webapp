@@ -45,3 +45,10 @@ export const confirmLoader = async () => {
   }
   return null;
 };
+
+// 1. Login Success --> loader (fetching data) --> home screen
+// 2. Login Success --> Home Screen --> useQuery (cache after fetching data)
+// 3. Login Success --> loader (cache after fetching data) --> home screen
+
+// tanstack query
+// RTK query (redux-toolkit)

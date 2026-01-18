@@ -1,13 +1,56 @@
-import { Link, useLoaderData } from "react-router";
+import { Link } from "react-router";
 import CarouselCard from "@/components/products/CarouselCard";
 import { Button } from "@/components/ui/button";
 import Couch from "@/data/images/couch.png";
 import BlogCard from "@/components/blogs/BlogCard";
 import ProductCard from "@/components/products/ProductCard";
 import type { Product } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { postQuery, productQuery } from "@/api/query";
 
 const Home = () => {
-  const { productsData, postsData } = useLoaderData();
+  // const { productsData, postsData } = useLoaderData();
+
+  const {
+    data: productsData,
+    isLoading: isLoadingProducts,
+    isError: isErrorProducts,
+    error: errorProducts,
+    refetch: refetchProducts,
+  } = useQuery(productQuery("?limit=8"));
+
+  const {
+    data: postsData,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+    error: errorPosts,
+    refetch: refetchPosts,
+  } = useQuery(postQuery("?limit=3"));
+
+  if (isLoadingProducts && isLoadingPosts) {
+    return <p className="text-center">Loading...</p>;
+  }
+
+  if (isErrorProducts && isErrorPosts) {
+    return (
+      <div className="container mx-auto my-32 flex flex-1 place-content-center">
+        <div className="text-center text-red-400">
+          <p className="mb-4">
+            {errorProducts?.message} & {errorPosts?.message}
+          </p>
+          <Button
+            onClick={() => {
+              refetchProducts();
+              refetchPosts;
+            }}
+            variant="secondary"
+          >
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const Title = ({
     title,
@@ -58,19 +101,22 @@ const Home = () => {
         </div>
         <img src={Couch} alt="Couch" className="w-full lg:w-3/5" />
       </div>
-      <CarouselCard products={productsData.products} />
+      {productsData && <CarouselCard products={productsData.products} />}
       <Title
         title="Featured Products"
         href="/products"
         sideText="View All Products"
       />
       <div className="grid grid-cols-1 gap-6 px-4 pt-4 md:grid-cols-2 md:px-0 lg:grid-cols-4">
-        {productsData.products.slice(0, 4).map((product: Product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {productsData &&
+          productsData.products
+            .slice(0, 4)
+            .map((product: Product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
       </div>
       <Title title="Recent Blog" href="/blogs" sideText="View All Posts" />
-      <BlogCard posts={postsData.posts} />
+      {postsData && <BlogCard posts={postsData.posts} />}
     </div>
   );
 };

@@ -5,53 +5,55 @@ import Couch from "@/data/images/couch.png";
 import BlogCard from "@/components/blogs/BlogCard";
 import ProductCard from "@/components/products/ProductCard";
 import type { Product } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { postQuery, productQuery } from "@/api/query";
 
 const Home = () => {
   // const { productsData, postsData } = useLoaderData();
 
-  const {
-    data: productsData,
-    isLoading: isLoadingProducts,
-    isError: isErrorProducts,
-    error: errorProducts,
-    refetch: refetchProducts,
-  } = useQuery(productQuery("?limit=8"));
+  // const {
+  //   data: productsData,
+  //   isLoading: isLoadingProducts,
+  //   isError: isErrorProducts,
+  //   error: errorProducts,
+  //   refetch: refetchProducts,
+  // } = useQuery(productQuery("?limit=8"));
 
-  const {
-    data: postsData,
-    isLoading: isLoadingPosts,
-    isError: isErrorPosts,
-    error: errorPosts,
-    refetch: refetchPosts,
-  } = useQuery(postQuery("?limit=3"));
+  // const {
+  //   data: postsData,
+  //   isLoading: isLoadingPosts,
+  //   isError: isErrorPosts,
+  //   error: errorPosts,
+  //   refetch: refetchPosts,
+  // } = useQuery(postQuery("?limit=3"));
 
-  if (isLoadingProducts && isLoadingPosts) {
-    return <p className="text-center">Loading...</p>;
-  }
+  // if (isLoadingProducts && isLoadingPosts) {
+  //   return <p className="text-center">Loading...</p>;
+  // }
 
-  if (isErrorProducts && isErrorPosts) {
-    return (
-      <div className="container mx-auto my-32 flex flex-1 place-content-center">
-        <div className="text-center text-red-400">
-          <p className="mb-4">
-            {errorProducts?.message} & {errorPosts?.message}
-          </p>
-          <Button
-            onClick={() => {
-              refetchProducts();
-              refetchPosts;
-            }}
-            variant="secondary"
-          >
-            Retry
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // if (isErrorProducts && isErrorPosts) {
+  //   return (
+  //     <div className="container mx-auto my-32 flex flex-1 place-content-center">
+  //       <div className="text-center text-red-400">
+  //         <p className="mb-4">
+  //           {errorProducts?.message} & {errorPosts?.message}
+  //         </p>
+  //         <Button
+  //           onClick={() => {
+  //             refetchProducts();
+  //             refetchPosts;
+  //           }}
+  //           variant="secondary"
+  //         >
+  //           Retry
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
+  const { data: productsData } = useSuspenseQuery(productQuery("?limit=8"));
+  const { data: postsData } = useSuspenseQuery(postQuery("?limit=3"));
   const Title = ({
     title,
     href,

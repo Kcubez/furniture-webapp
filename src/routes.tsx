@@ -23,6 +23,7 @@ import {
   homeLoader,
   loginLoader,
   otpLoader,
+  postLoader,
 } from "./router/loader";
 import {
   confirmAction,
@@ -69,12 +70,13 @@ export const router = createBrowserRouter([
             loader: blogInfiniteLoader,
           },
           {
-            path: ":blogId",
+            path: ":postId",
             element: (
               <Suspense fallback={<SuspenseFallBack />}>
                 <BlogDetail />
               </Suspense>
             ),
+            loader: postLoader,
           },
         ],
       },
